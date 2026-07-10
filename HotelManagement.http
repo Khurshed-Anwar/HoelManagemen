@@ -1,0 +1,34 @@
+@HotelManagement_HostAddress = https://localhost:7202
+
+###
+
+GET {{HotelManagement_HostAddress}}/api/hotel
+Accept: application/json
+
+###
+
+POST {{HotelManagement_HostAddress}}/hotel
+Content-Type: application/json
+
+{
+	"id": 2,
+	"name": "Ocean View",
+	"address": "45 Beach Road"
+}
+
+###
+
+PUT {{HotelManagement_HostAddress}}/hotel/2
+Content-Type: application/json
+
+{
+	"id": 2,
+	"name": "Ocean View Updated",
+	"address": "89 Coast Avenue"
+}
+
+###
+
+DELETE {{HotelManagement_HostAddress}}/hotel/2
+
+###
