@@ -1,9 +1,9 @@
 ﻿namespace HotelManagement.Data
 {
-    public class Hotel
+    public class Hotel : BaseEntity
     {
         public int id { get; set; }
-        public  string Name { get; set; }
+        public string Name { get; set; }
         public string Address { get; set; }
         public int Rating { get; set; }
 

@@ -1,34 +1,192 @@
 @HotelManagement_HostAddress = https://localhost:7202
+@accessToken = your_token_here
 
-###
+### ==================================
+### AUTHENTICATION ENDPOINTS
+### ==================================
 
-GET {{HotelManagement_HostAddress}}/api/hotel
-Accept: application/json
-
-###
-
-POST {{HotelManagement_HostAddress}}/hotel
+### ✅ Register a new user (WORKS)
+POST {{HotelManagement_HostAddress}}/api/auth/register
 Content-Type: application/json
 
 {
-	"id": 2,
-	"name": "Ocean View",
-	"address": "45 Beach Road"
+  "Email": "john.doe@example.com",
+  "Password": "Test@123456",
+  "FirstName": "John",
+  "LastName": "Doe"
 }
 
-###
-
-PUT {{HotelManagement_HostAddress}}/hotel/2
+### ✅ Login (WORKS)
+POST {{HotelManagement_HostAddress}}/api/auth/login
 Content-Type: application/json
 
 {
-	"id": 2,
-	"name": "Ocean View Updated",
-	"address": "89 Coast Avenue"
+  "Email": "john.doe@example.com",
+  "Password": "Test@123456"
+}
+
+### ❌ NOT IMPLEMENTED - Refresh Token
+# POST {{HotelManagement_HostAddress}}/api/auth/refresh
+# Content-Type: application/json
+# {
+#   "refreshToken": "your_refresh_token_here"
+# }
+
+### ❌ NOT IMPLEMENTED - Logout
+# POST {{HotelManagement_HostAddress}}/api/auth/logout
+# Authorization: Bearer {{accessToken}}
+
+### ❌ NOT IMPLEMENTED - Get Current User
+# GET {{HotelManagement_HostAddress}}/api/auth/me
+# Authorization: Bearer {{accessToken}}
+
+### ❌ NOT IMPLEMENTED - Change Password
+# PUT {{HotelManagement_HostAddress}}/api/auth/change-password
+# Authorization: Bearer {{accessToken}}
+# Content-Type: application/json
+# {
+#   "CurrentPassword": "Test@123456",
+#   "NewPassword": "NewTest@123456"
+# }
+
+### ❌ NOT IMPLEMENTED - Forgot Password
+# POST {{HotelManagement_HostAddress}}/api/auth/forgot-password
+# Content-Type: application/json
+# {
+#   "Email": "john.doe@example.com"
+# }
+
+### ❌ NOT IMPLEMENTED - Reset Password
+# POST {{HotelManagement_HostAddress}}/api/auth/reset-password
+# Content-Type: application/json
+# {
+#   "Email": "john.doe@example.com",
+#   "Token": "reset_token",
+#   "NewPassword": "NewTest@123456"
+# }
+
+### ==================================
+### COUNTRIES ENDPOINTS
+### ==================================
+
+### ✅ Get all countries
+GET {{HotelManagement_HostAddress}}/api/countries
+
+### ✅ Get country by ID
+@countryId = 1
+GET {{HotelManagement_HostAddress}}/api/countries/{{countryId}}
+
+### ✅ Create a new country
+POST {{HotelManagement_HostAddress}}/api/countries
+Content-Type: application/json
+
+{
+  "Name": "United States",
+  "ShortName": "US"
+}
+
+### ✅ Update an existing country
+PUT {{HotelManagement_HostAddress}}/api/countries/2
+Content-Type: application/json
+
+{
+  "CountryId": 2,
+  "Name": "Pakistan",
+  "ShortName": "PK"
+}
+
+### ✅ Delete a country
+DELETE {{HotelManagement_HostAddress}}/api/countries/2
+
+### ==================================
+### HOTELS ENDPOINTS
+### ==================================
+
+### ✅ Get all hotels
+GET {{HotelManagement_HostAddress}}/api/hotels
+
+### ✅ Get hotel by ID
+@hotelId = 1
+GET {{HotelManagement_HostAddress}}/api/hotels/{{hotelId}}
+
+### ✅ Create a new hotel
+POST {{HotelManagement_HostAddress}}/api/hotels
+Content-Type: application/json
+
+{
+  "Name": "Hilton Garden Inn",
+  "Address": "123 Main Street, Karachi",
+  "Rating": 4,
+  "CountryId": 1
+}
+
+### ✅ Update an existing hotel
+PUT {{HotelManagement_HostAddress}}/api/hotels/1
+Content-Type: application/json
+
+{
+  "id": 1,
+  "Name": "Hilton Garden Inn - Updated",
+  "Address": "456 Updated Street, Karachi",
+  "Rating": 5,
+  "CountryId": 1
+}
+
+### ✅ Delete a hotel
+DELETE {{HotelManagement_HostAddress}}/api/hotels/1
+
+### ==================================
+### TEST SCENARIOS
+### ==================================
+
+### Test Scenario 1: Create Country and Hotel
+POST {{HotelManagement_HostAddress}}/api/countries
+Content-Type: application/json
+
+{
+  "Name": "United Kingdom",
+  "ShortName": "UK"
 }
 
 ###
+POST {{HotelManagement_HostAddress}}/api/hotels
+Content-Type: application/json
 
-DELETE {{HotelManagement_HostAddress}}/hotel/2
+{
+  "Name": "London Marriott",
+  "Address": "Park Lane, London",
+  "Rating": 5,
+  "CountryId": 3
+}
 
 ###
+GET {{HotelManagement_HostAddress}}/api/countries/3
+
+### Test Scenario 2: Complete User Flow
+POST {{HotelManagement_HostAddress}}/api/auth/register
+Content-Type: application/json
+
+{
+  "Email": "newuser@example.com",
+  "Password": "NewUser@123",
+  "FirstName": "New",
+  "LastName": "User"
+}
+
+###
+POST {{HotelManagement_HostAddress}}/api/auth/login
+Content-Type: application/json
+
+{
+  "Email": "newuser@example.com",
+  "Password": "NewUser@123"
+}
+
+### Test Scenario 3: Invalid Login
+POST {{HotelManagement_HostAddress}}/api/auth/login
+Content-Type: application/json
+
+{
+  "Email": "nonexistent@example.com",
+  "Password": "WrongPassword"
+}
